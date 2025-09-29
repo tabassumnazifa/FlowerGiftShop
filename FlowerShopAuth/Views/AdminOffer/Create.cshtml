@@ -1,0 +1,112 @@
+﻿@model FlowerShopAuth.Models.Offer
+
+@{
+    ViewData["Title"] = "Add New Offer";
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #ffe6f0;
+        padding: 20px 40px;
+    }
+
+    h2 {
+        color: #d63384;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .offer-card {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        padding: 30px;
+        max-width: 500px;
+        margin: 0 auto 30px;
+    }
+
+        .offer-card label {
+            font-weight: 500;
+            color: #d63384;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .offer-card input {
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+    .btn-custom {
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+        }
+
+    .text-danger {
+        font-size: 0.9rem;
+        margin-top: -10px;
+        margin-bottom: 10px;
+        display: block;
+    }
+</style>
+
+<div>
+    <h2>🎁 Add New Offer 🎁</h2>
+
+    <div class="offer-card">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+
+            <div>
+                <label asp-for="Name">Offer Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="MinimumAmount">Minimum Purchase Amount</label>
+                <input asp-for="MinimumAmount" class="form-control" />
+                <span asp-validation-for="MinimumAmount" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="DiscountPercentage">Discount Percentage (%)</label>
+                <input asp-for="DiscountPercentage" class="form-control" />
+                <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="StartDate">Start Date</label>
+                <input asp-for="StartDate" type="date" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="EndDate">End Date</label>
+                <input asp-for="EndDate" type="date" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-custom">Add Offer</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

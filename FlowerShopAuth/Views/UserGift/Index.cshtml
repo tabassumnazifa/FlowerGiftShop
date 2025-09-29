@@ -1,0 +1,265 @@
+﻿@model IEnumerable<FlowerShopAuth.Models.Gift>
+
+@{
+    ViewData["Title"] = "Available Gifts";
+    var searchValue = ViewContext.HttpContext.Request.Query["searchString"].ToString();
+    var activeOffers = ViewBag.ActiveOffers as List<FlowerShopAuth.Models.Offer> ?? new List<FlowerShopAuth.Models.Offer>();
+    var cartTotal = ViewBag.CartTotal != null ? (decimal)ViewBag.CartTotal : 0m;
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #fff0f5;
+        padding: 20px;
+    }
+
+    h2 {
+        font-family: 'Pacifico', cursive;
+        color: #d63384;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .top-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+    .notify-btn, .cart-btn {
+        display: inline-block;
+        width: 55px;
+        height: 55px;
+        line-height: 55px;
+        text-align: center;
+        font-size: 2rem;
+        color: #fff;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        text-decoration: none;
+        transition: transform 0.2s, background 0.2s;
+        position: relative;
+    }
+
+        .notify-btn:hover {
+            transform: scale(1.15);
+            background: #d63384;
+        }
+
+        .cart-btn:hover {
+            transform: scale(1.15);
+            background: #ff66b3;
+        }
+
+    .notify-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff0000;
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: bold;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .search-bar {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+        .search-bar input[type="text"] {
+            width: 250px;
+            padding: 8px 12px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+
+        .search-bar button {
+            padding: 8px 20px;
+            border-radius: 25px;
+            border: none;
+            background-color: #d63384;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .search-bar button:hover {
+                background-color: #ff66b3;
+            }
+
+    .gift-card {
+        background: #fff;
+        border-radius: 20px;
+        border: 2px solid #ff99cc;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        padding: 15px;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+        .gift-card:hover {
+            transform: scale(1.05);
+        }
+
+    .gift-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 15px;
+        margin-bottom: 10px;
+        object-fit: cover;
+    }
+
+    .gift-name {
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: #b30059;
+    }
+
+    .gift-price {
+        font-weight: 500;
+        color: #ff3385;
+        margin-bottom: 10px;
+    }
+
+    .gift-desc {
+        font-size: 0.95rem;
+        color: #a83279;
+        margin-bottom: 15px;
+    }
+
+    .add-cart-btn {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 25px;
+        padding: 8px 20px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .add-cart-btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+    .gifts-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    .no-results {
+        text-align: center;
+        color: #d63384;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-top: 30px;
+    }
+
+    .review-btn {
+        background-color: #d63384;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 20px;
+        transition: transform 0.2s;
+    }
+
+        .review-btn:hover {
+            transform: scale(1.08);
+            background: #ff4da6;
+        }
+
+    .checkout-btn {
+        padding: 12px 30px;
+        font-size: 1.2rem;
+        border-radius: 25px;
+        background-color: #d63384;
+        color: white;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 30px;
+        transition: all 0.3s ease;
+    }
+
+        .checkout-btn:hover {
+            background-color: #ff66b3;
+            transform: scale(1.05);
+        }
+
+</style>
+
+<h2>🌸 Available Gifts 🌸</h2>
+
+<!-- Top Buttons -->
+<div class="top-actions">
+    <a asp-controller="UserOffer" asp-action="UserOffers" title="View Offers" class="notify-btn">
+        🔔
+        @if (activeOffers.Any())
+        {
+            <span class="notify-badge">@activeOffers.Count</span>
+        }
+    </a>
+    <a asp-controller="Cart" asp-action="Index" title="View Cart" class="cart-btn">🛒</a>
+</div>
+
+<!-- Search Bar -->
+<div class="search-bar">
+    <form method="get" asp-action="Index">
+        <input type="text" name="searchString" value="@searchValue" placeholder="Search gifts..." />
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+<!-- Customer Review Button -->
+<div style="text-align:center;">
+    <a asp-controller="Ratings" asp-action="Index" class="review-btn">🌟 Customer Reviews</a>
+</div>
+
+<!-- Gift List -->
+@if (!Model.Any())
+{
+    <div class="no-results">❌ Sorry, it's not available.</div>
+}
+else
+{
+    <div class="gifts-container">
+        @foreach (var gift in Model)
+        {
+            <div class="gift-card">
+                @if (!string.IsNullOrEmpty(gift.Image))
+                {
+                    <img src="@gift.Image" alt="@gift.Name" class="gift-img" />
+                }
+                <div class="gift-name">@gift.Name</div>
+                <div class="gift-price">@gift.Price.ToString("C")</div>
+                <div class="gift-desc">@gift.Description</div>
+
+                <!-- Add to Cart Form -->
+                <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="giftId" value="@gift.Id" />
+                    <button type="submit" class="add-cart-btn">Add to Cart</button>
+                </form>
+            </div>
+        }
+    </div>
+}

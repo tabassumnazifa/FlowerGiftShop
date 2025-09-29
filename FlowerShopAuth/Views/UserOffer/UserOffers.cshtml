@@ -1,0 +1,29 @@
+﻿@model IEnumerable<FlowerShopAuth.Models.Offer>
+
+@{
+    ViewData["Title"] = "Available Offers";
+}
+
+<h2 style="text-align:center; color:#d63384;">🎁 Current Offers 🎁</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div style="text-align:center; color:red; font-weight:bold; margin-top:20px;">
+        @ViewBag.Message
+    </div>
+}
+else
+{
+    <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:20px;">
+        @foreach (var offer in Model)
+        {
+            <div style="border:2px solid #ff99cc; padding:15px; border-radius:12px; background:#fff0f5; width:250px; text-align:center;">
+                <h3 style="color:#b30059; margin-bottom:10px;">@offer.Name</h3> <!-- ✅ Offer Name Added -->
+                <p><b>Minimum Amount:</b> @offer.MinimumAmount</p>
+                <p><b>Discount:</b> @offer.DiscountPercentage %</p>
+                <p><b>Valid From:</b> @offer.StartDate.ToShortDateString()</p>
+                <p><b>Valid Until:</b> @offer.EndDate.ToShortDateString()</p>
+            </div>
+        }
+    </div>
+}

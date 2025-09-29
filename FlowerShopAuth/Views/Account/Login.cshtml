@@ -1,0 +1,155 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+<div class="page-container">
+    <div class="content-wrap">
+        <div class="form-container">
+            <h2>🌸 Login 🌸</h2>
+
+            <form asp-action="Login" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required />
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select name="role" class="form-control" required>
+                        <option value="" disabled selected>Select Role</option>
+                        <option value="User">User</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+
+
+                <button type="submit" class="btn btn-custom">Login</button>
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="text-danger">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <p>@error.ErrorMessage</p>
+                        }
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>🌸 The Sakura Gift Garden - All Rights Reserved 🌸</p>
+    </footer>
+</div>
+
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: repeating-linear-gradient(135deg, #ffe6f0, #ffe6f0 40px, #ffcce0 40px, #ffcce0 80px, #ffb3d1 80px, #ffb3d1 120px);
+    }
+
+    .page-container {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content-wrap {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+    }
+
+    .form-container {
+        background: rgba(255,255,255,0.95);
+        padding: 40px;
+        border-radius: 35px;
+        border: 4px solid #ff99cc;
+        box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+        max-width: 450px;
+        width: 100%;
+        text-align: center;
+    }
+
+        .form-container h2 {
+            font-family: 'Pacifico', cursive;
+            color: #d63384;
+            margin-bottom: 25px;
+            font-size: 2.8rem;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #b30059;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 25px;
+            border: 2px solid #ffb3d1;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+            .form-group input:focus, .form-group select:focus {
+                border-color: #ff3385;
+                box-shadow: 0 0 8px rgba(255, 51, 133, 0.5);
+                outline: none;
+            }
+
+    .btn-custom {
+        padding: 12px 35px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        background: #ff3385;
+        color: white;
+        border: none;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+    .text-danger {
+        margin-top: 15px;
+        color: #ff0066;
+        font-weight: 500;
+    }
+
+    footer.footer {
+        background: #ff99cc;
+        text-align: center;
+        padding: 15px 0;
+        font-weight: 500;
+        color: white;
+        border-top: 2px solid #ff66b3;
+        border-radius: 10px 10px 0 0;
+        box-shadow: 0 -5px 10px rgba(0,0,0,0.1);
+    }
+</style>

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<FlowerShopAuth.Models.Offer>
+
+@{
+    ViewData["Title"] = "Active Offers (Admin)";
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<h2 class="mb-4 text-center text-primary">🎁 Active Offers (Admin) 🎁</h2>
+
+<table class="table table-hover table-bordered align-middle text-center" style="background-color: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px;">
+    <thead class="table-dark">
+        <tr>
+            <th>Offer Name</th>
+            <th>Minimum Amount</th>
+            <th>Discount %</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var offer in Model)
+            {
+                <tr>
+                    <td>@offer.Name</td>
+                    <td>@offer.MinimumAmount.ToString("C")</td>
+                    <td>@offer.DiscountPercentage %</td>
+                    <td>@offer.StartDate.ToShortDateString()</td>
+                    <td>@offer.EndDate.ToShortDateString()</td>
+                    <td>
+                        
+                        <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@offer.Id">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center text-muted">No active offers available</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    h2 {
+        font-family: 'Poppins', sans-serif;
+        color: #d63384;
+    }
+
+    .table th, .table td {
+        vertical-align: middle !important;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #fce4ec !important;
+        transition: 0.3s;
+    }
+
+    .btn {
+        border-radius: 8px;
+    }
+</style>

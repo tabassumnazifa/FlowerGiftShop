@@ -1,0 +1,139 @@
+﻿@model FlowerShopAuth.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        background-color: #ffffff;
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-container {
+        background: #fff;
+        padding: 40px;
+        border-radius: 30px;
+        border: 3px solid #ffb3d1;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+        max-width: 500px;
+        margin: 60px auto;
+        width: 100%;
+    }
+
+        .form-container h2 {
+            font-family: 'Pacifico', cursive;
+            color: #d63384;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.8rem;
+        }
+
+    .form-group label {
+        font-weight: 500;
+        color: #b30059;
+    }
+
+    .form-control {
+        border-radius: 25px;
+        border: 2px solid #ffccd9;
+        padding: 10px 15px;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #ff66b3;
+            box-shadow: 0 0 6px rgba(255, 102, 179, 0.4);
+            outline: none;
+        }
+
+    select.form-control {
+        cursor: pointer;
+    }
+
+    .form-control:hover {
+        border-color: #ff99cc;
+    }
+
+    .btn-custom {
+        background-color: #ff66b3;
+        color: white;
+        border-radius: 50px;
+        padding: 12px 40px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+    footer {
+        margin-top: auto;
+        padding: 15px 0;
+        background-color: #ffb3d1;
+        text-align: center;
+        font-weight: 500;
+        border-top: 3px solid #ff66b3;
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .text-danger {
+        margin-top: 15px;
+        color: #ff0066;
+        font-weight: 500;
+    }
+</style>
+
+<div class="form-container">
+    <h2>🌸 Register 🌸</h2>
+
+    <form asp-action="Register" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="form-group mb-3">
+            <label>Email</label>
+            <input type="email" name="Email" class="form-control" required />
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Password</label>
+            <input type="password" name="Password" class="form-control" required />
+        </div>
+
+        <div class="form-group mb-4">
+            <label>Role</label>
+            <select name="Role" class="form-control" required>
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+            </select>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-custom">Register</button>
+        </div>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="text-danger">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <p>@error.ErrorMessage</p>
+                }
+            </div>
+        }
+    </form>
+</div>
+
+<footer>
+    🌸 The Sakura Gift Garden - All Rights Reserved 🌸
+</footer>

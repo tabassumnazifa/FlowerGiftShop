@@ -1,0 +1,171 @@
+﻿@model IEnumerable<FlowerShopAuth.Models.Gift>
+
+@{
+    ViewData["Title"] = "Manage Gifts & Offers";
+    var offers = ViewBag.ActiveOffers as List<FlowerShopAuth.Models.Offer>;
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #ffe6f0;
+        padding: 20px 40px;
+    }
+
+    h2 {
+        color: #d63384;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-custom {
+        border-radius: 25px;
+        padding: 8px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+        }
+
+    .gift-card {
+        display: inline-block;
+        vertical-align: top;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin: 10px;
+        padding: 15px;
+        width: 220px;
+        text-align: center;
+    }
+
+        .gift-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+    .gift-actions {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 10px;
+    }
+
+    .offers-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 40px;
+    }
+
+        .offers-table th, .offers-table td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: center;
+        }
+
+        .offers-table th {
+            background-color: #d63384;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .offers-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .offers-table tr:hover {
+            background-color: #f1cde3;
+        }
+
+    .offer-actions a {
+        margin: 0 5px;
+        font-size: 0.85rem;
+    }
+
+    .right-buttons {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+    }
+
+        .right-buttons a {
+            margin-left: 10px;
+        }
+</style>
+
+<div>
+    <h2>🌸 Manage Gifts & Offers 🌸</h2>
+
+    <!-- Right buttons -->
+    <div class="right-buttons">
+        <a class="btn btn-success btn-custom" asp-action="Create">➕ Add New Gift</a>
+        <a class="btn btn-info btn-custom" asp-controller="AdminOffer" asp-action="Create">🎁 Add Offer</a>
+        <a class="btn btn-secondary btn-custom" asp-controller="AdminOffer" asp-action="ActiveOffers">🎁 View Active Offers</a>
+        <a class="btn btn-warning btn-custom" asp-controller="Ratings" asp-action="Index">🌟 Customer Reviews</a>
+    </div>
+
+    <!-- Active Offers Table -->
+    @if (offers != null && offers.Count > 0)
+    {
+        <h4>Active Offers</h4>
+        <table class="offers-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Min Purchase</th>
+                    <th>Discount %</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var offer in offers)
+                {
+                    <tr>
+                        <td>@offer.Name</td>
+                        <td>@offer.MinimumAmount</td>
+                        <td>@offer.DiscountPercentage</td>
+                        <td>@offer.StartDate.ToShortDateString()</td>
+                        <td>@offer.EndDate.ToShortDateString()</td>
+                        <td class="offer-actions">
+                            <a class="btn btn-sm btn-primary" asp-controller="AdminOffer" asp-action="Edit" asp-route-id="@offer.Id">Editi</a>
+                            <a class="btn btn-sm btn-danger" asp-controller="AdminOffer" asp-action="Delete" asp-route-id="@offer.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <!-- Gift Cards -->
+    <div>
+        @foreach (var gift in Model)
+        {
+            <div class="gift-card">
+                @if (!string.IsNullOrEmpty(gift.Image))
+                {
+                    <img src="@gift.Image" alt="@gift.Name" />
+                }
+                <h5>@gift.Name</h5>
+                <p><strong>Price:</strong> @gift.Price.ToString("C")</p>
+                <p>@gift.Description</p>
+
+                <div class="gift-actions">
+                    <a class="btn btn-primary btn-sm btn-custom" asp-action="Edit" asp-route-id="@gift.Id">Edit</a>
+                    <a class="btn btn-danger btn-sm btn-custom" asp-action="Delete" asp-route-id="@gift.Id">Delete</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

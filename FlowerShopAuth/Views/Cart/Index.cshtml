@@ -1,0 +1,190 @@
+﻿@model IEnumerable<FlowerShopAuth.Models.Cart>
+
+@{
+    ViewData["Title"] = "My Cart";
+    var totalAmount = Model.Sum(x => x.Price * x.Count);
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #fff0f5;
+        padding: 20px;
+    }
+
+    h2 {
+        font-family: 'Pacifico', cursive;
+        color: #d63384;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+    }
+
+    table {
+        background: #fff;
+        border-radius: 15px;
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        max-width: 900px;
+        margin: auto;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #ff66b3;
+        color: #fff;
+        font-weight: 500;
+    }
+
+    tr:nth-child(even) {
+        background-color: #ffe6f0;
+    }
+
+    .btn-action {
+        padding: 5px 12px;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1rem;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin: 0 3px;
+        transition: all 0.2s ease;
+    }
+
+    .btn-increase {
+        background-color: #28a745;
+    }
+
+        .btn-increase:hover {
+            opacity: 0.8;
+        }
+
+    .btn-decrease {
+        background-color: #ffc107;
+    }
+
+        .btn-decrease:hover {
+            opacity: 0.8;
+        }
+
+    .btn-remove {
+        background-color: #dc3545;
+    }
+
+        .btn-remove:hover {
+            opacity: 0.8;
+        }
+
+    .total-row td {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #b30059;
+    }
+
+    .empty-cart {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #b30059;
+        margin-top: 30px;
+    }
+
+    .checkout-btn-container {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .btn-checkout {
+        background-color: #d63384;
+        color: #fff;
+        border: none;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .btn-checkout:hover {
+            background-color: #ff66b3;
+            transform: scale(1.05);
+        }
+</style>
+
+<h2>🌸 My Cart 🌸</h2>
+
+@if (!Model.Any())
+{
+    <p class="empty-cart">Your cart is empty.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Gift Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Count</td>
+                    <td>@String.Format("{0:C}", item.Price)</td>
+                    <td>@String.Format("{0:C}", item.Price * item.Count)</td>
+                    <td>
+                        <!-- Increase Quantity -->
+                        <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="cartId" value="@item.Id" />
+                            <input type="hidden" name="count" value="@(item.Count + 1)" />
+                            <button type="submit" class="btn-action btn-increase">+</button>
+                        </form>
+
+                        <!-- Decrease Quantity -->
+                        <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="cartId" value="@item.Id" />
+                            <input type="hidden" name="count" value="@(item.Count - 1)" />
+                            <button type="submit" class="btn-action btn-decrease">-</button>
+                        </form>
+
+                        <!-- Remove Item -->
+                        <form asp-controller="Cart" asp-action="Remove" method="post" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="cartId" value="@item.Id" />
+                            <button type="submit" class="btn-action btn-remove">x</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+
+            <tr class="total-row">
+                <td colspan="3">Total Amount:</td>
+                <td colspan="2">@String.Format("{0:C}", totalAmount)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="checkout-btn-container">
+        <form asp-controller="Cart" asp-action="ProceedToCheckout" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn-checkout">💳 Proceed to Checkout</button>
+        </form>
+    </div>
+}
