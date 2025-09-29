@@ -29,7 +29,9 @@ A **C# .NET project** developed for the course **System Design and Analysis**, s
 
 ---
 ## 📹 Project Demo
-![Project Demo](https://github.com/tabassumnazifa/FlowerGiftShop/raw/refs/heads/main/demo.gif)
+
+[![Project Demo](https://github.com/tabassumnazifa/FlowerGiftShop/blob/main/06a2b1d7-6787-4dc0-a089-f2899c3f30c03-ezgif.com-optimize.gif?raw=true)](https://github.com/tabassumnazifa/FlowerGiftShop/raw/refs/heads/main/06a2b1d7-6787-4dc0-a089-f2899c3f30c0.mp4)
+
 [Click here to watch full video](https://github.com/tabassumnazifa/FlowerGiftShop/raw/refs/heads/main/06a2b1d7-6787-4dc0-a089-f2899c3f30c0.mp4)
 
 
